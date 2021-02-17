@@ -1,0 +1,31 @@
+# Protect My Directories
+Options -Indexes
+
+# Protect my htaccess file
+<Files .htaccess>
+	order deny,allow
+	deny from all
+</Files>
+
+# Clean Url for User Profiles
+  AddDefaultCharset UTF-8
+  FileETag None
+  Options +FollowSymLinks -MultiViews
+
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^([^.]+)$ $1.php [NC,L]
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+join\?token=([^\s&]+) [NC]
+RewriteRule ^ join/%1? [R=301,L]
+RewriteRule ^join/([^/]+)?$ join.php?token=$1 [L,QSA]
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+setpassword\?token=([^\s&]+) [NC]
+RewriteRule ^ setpassword/%1? [R=301,L]
+RewriteRule ^setpassword/([^/]+)?$ setpassword.php?token=$1 [L,QSA]
+
+# RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+profile\?token=([^\s&]+) [NC]
+# RewriteRule ^ profile/%1? [R=301,L]
+# RewriteRule ^profile/([^/]+)?$ profile.php?token=$1 [L,QSA]
+
+# ErrorDocument 404 http://127.0.0.1/haa/404
